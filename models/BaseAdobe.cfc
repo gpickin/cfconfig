@@ -183,12 +183,15 @@ component accessors=true extends='cfconfig-services.models.BaseConfig' {
 		if( !isNull( thisConfig[ 16 ].preserveCaseForSerialize ) ) { setDotNotationUpperCase( !thisConfig[ 16 ].preserveCaseForSerialize ); }
 		setSecureJSON( thisConfig[ 16 ].secureJSON );
 		setSecureJSONPrefix( thisConfig[ 16 ].secureJSONPrefix );
-		setMaxOutputBufferSize( thisConfig[ 16 ].maxOutputBufferSize );
+		// This setting CF10+
+		if( !isNull( thisConfig[ 16 ].maxOutputBufferSize ) ) { setMaxOutputBufferSize( thisConfig[ 16 ].maxOutputBufferSize ); }
 		setInMemoryFileSystemEnabled( thisConfig[ 16 ].enableInMemoryFileSystem );
 		setInMemoryFileSystemLimit( thisConfig[ 16 ].inMemoryFileSystemLimit );
-		setInMemoryFileSystemAppLimit( thisConfig[ 16 ].inMemoryFileSystemAppLimit );
+		// This setting CF10+
+		if( !isNull( thisConfig[ 16 ].inMemoryFileSystemAppLimit ) ) { setInMemoryFileSystemAppLimit( thisConfig[ 16 ].inMemoryFileSystemAppLimit ); }
 		setAllowExtraAttributesInAttrColl( thisConfig[ 16 ].allowExtraAttributesInAttrColl );
-		setDisallowUnamedAppScope( thisConfig[ 16 ].dumpunnamedappscope );
+		// This setting CF10+
+		if( !isNull( thisConfig[ 16 ].dumpunnamedappscope ) ) { setDisallowUnamedAppScope( thisConfig[ 16 ].dumpunnamedappscope ); }
 		
 		setFlashRemotingEnable( thisConfig[ 16 ].enableFlashRemoting );
 		setFlexDataServicesEnable( thisConfig[ 16 ].enableFlexDataServices );
@@ -202,18 +205,19 @@ component accessors=true extends='cfconfig-services.models.BaseConfig' {
 		if( !isNull( thisConfig[ 16 ].allowappvarincontext ) ) { setAllowApplicationVarsInServletContext( thisConfig[ 16 ].allowappvarincontext ); }
 		
 		setCFaaSGeneratedFilesExpiryTime( thisConfig[ 16 ].CFaaSGeneratedFilesExpiryTime );
-		setORMSearchIndexDirectory( thisConfig[ 16 ].ORMSearchIndexDirectory );
+		// This setting CF10+
+		if( !isNull( thisConfig[ 16 ].ORMSearchIndexDirectory ) ) { setORMSearchIndexDirectory( thisConfig[ 16 ].ORMSearchIndexDirectory ); }
 		setGoogleMapKey( thisConfig[ 16 ].googleMapKey );
 		setServerCFCEenabled( thisConfig[ 16 ].enableServerCFC );
 		setServerCFC( thisConfig[ 16 ].serverCFC );
 		
 		// This setting CF11+
 		if( !isNull( thisConfig[ 16 ].compileextforinclude ) ) { setCompileExtForCFInclude( thisConfig[ 16 ].compileextforinclude ); }
-		
-		setSessionCookieTimeout( thisConfig[ 16 ].sessionCookieTimeout );
-		setSessionCookieHTTPOnly( thisConfig[ 16 ].httpOnlySessionCookie );
-		setSessionCookieSecure( thisConfig[ 16 ].secureSessionCookie );
-		setSessionCookieDisableUpdate( thisConfig[ 16 ].internalCookiesDisableUpdate );
+		// This setting CF10+
+		if( !isNull( thisConfig[ 16 ].sessionCookieTimeout ) ) { setSessionCookieTimeout( thisConfig[ 16 ].sessionCookieTimeout ); }
+		if( !isNull( thisConfig[ 16 ].httpOnlySessionCookie ) ) { setSessionCookieHTTPOnly( thisConfig[ 16 ].httpOnlySessionCookie ); }
+		if( !isNull( thisConfig[ 16 ].secureSessionCookie ) ) { setSessionCookieSecure( thisConfig[ 16 ].secureSessionCookie ); }
+		if( !isNull( thisConfig[ 16 ].internalCookiesDisableUpdate ) ) { setSessionCookieDisableUpdate( thisConfig[ 16 ].internalCookiesDisableUpdate ); }
 		
 		// Map Adobe values to shared Lucee settings
 		switch( thisConfig[ 16 ].applicationCFCSearchLimit ) {
@@ -323,9 +327,11 @@ component accessors=true extends='cfconfig-services.models.BaseConfig' {
 	}
 	
 	private function readWebsocket() {
-		thisConfig = readWDDXConfigFile( getCFHomePath().listAppend( getWebsocketConfigPath(), '/' ) );
+		if( len( getWebsocketConfigPath() ) ){
+			thisConfig = readWDDXConfigFile( getCFHomePath().listAppend( getWebsocketConfigPath(), '/' ) );
 		
-		if( !isNull( thisConfig[ 'startWebSocketService' ] ) ) { setWebsocketEnabled( thisConfig[ 'startWebSocketService' ] ); }		
+			if( !isNull( thisConfig[ 'startWebSocketService' ] ) ) { setWebsocketEnabled( thisConfig[ 'startWebSocketService' ] ); }		
+		}	
 	}
 		
 	private function readClientStore() {
